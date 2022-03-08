@@ -1,22 +1,22 @@
 function range_random(gteq, lt) {
 	return gteq + Math.random() * (lt - gteq);
 }
-var TO_RADIAN = Math.PI / 180;
-var NUM_OF_PIECES = 50;
+const TO_RADIAN = Math.PI / 180;
+const NUM_OF_PIECES = 50;
 let isDrawing = false;
 
-var image = new Image();
+const image = new Image();
 image.src = "davido-dollar.png";
 
 function setup() {
 	if (isDrawing === true) return;
-	var canvas = document.querySelectorAll("canvas#confetti")[0];
+	const canvas = document.querySelector("canvas");
 	canvas.width = window.innerWidth;
 	canvas.height = window.innerHeight;
-	var context = canvas.getContext("2d");
-	var pieces = [];
-	var step = 0;
-	for (var i = 0; i < NUM_OF_PIECES; i++) {
+	const context = canvas.getContext("2d");
+	const pieces = [];
+	let step = 0;
+	for (let i = 0; i < NUM_OF_PIECES; i++) {
 		pieces.push({
 			w: 20,
 			h: 10,
@@ -34,7 +34,6 @@ function setup() {
 	}
 
 	let interval_id = setInterval(function () {
-		var piece;
 		context.clearRect(0, 0, canvas.width, canvas.height);
 		if (pieces.length == 0) {
 			clearInterval(interval_id);
@@ -43,9 +42,8 @@ function setup() {
 		}
 		// draw
 		isDrawing = true;
-		for (var i in pieces) {
-			piece = pieces[i];
-			var scaley = Math.sin(step * piece.cyclevsy) * piece.scale;
+		pieces.forEach((piece) => {
+			const scaley = Math.sin(step * piece.cyclevsy) * piece.scale;
 
 			context.save();
 			context.translate(
@@ -60,11 +58,10 @@ function setup() {
 			piece.degree += piece.vdegree;
 			piece.y += piece.vy;
 			piece.vy += piece.ay;
-		}
+		});
 		// remove
-		for (var i = pieces.length - 1; i >= 0; i--) {
-			piece = pieces[i];
-			if (piece.y > canvas.height) {
+		for (let i = pieces.length - 1; i >= 0; i--) {
+			if (pieces[i].y > canvas.height) {
 				pieces.splice(i, 1);
 			}
 		}
